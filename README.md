@@ -84,6 +84,14 @@ Engine calls it makes: `$.clock.now (via collectDiff`, `convene)`, `$.command.re
 
 A `tool.call` hook sits in the middle of every tool call: it can see the call, refuse it, or add context to its result. This mod uses that only for the behaviour described above.
 
+## Privacy
+
+When you run `/tribunal` or Claude calls `second_opinion`, it sends your current git diff (with secret-looking values redacted and sensitive files left out) to the reviewer CLIs you have installed: OpenAI's `codex` and xAI's `grok`. Those requests go to OpenAI and xAI under your own accounts and are covered by their terms. Nothing is sent unless you or Claude starts a review, and either reviewer can be turned off in the plugin settings.
+
+The mod collects no analytics or telemetry, and its author receives no data from it.
+
+Full policy: [PRIVACY.md](PRIVACY.md).
+
 ## License
 
 MIT
