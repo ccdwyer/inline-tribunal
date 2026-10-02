@@ -1,0 +1,80 @@
+{
+  "name": "inline-tribunal",
+  "version": "0.1.0",
+  "description": "A second_opinion tool and /tribunal command: your diff is reviewed by Codex and Grok side by side, read-only, inside the session",
+  "types": "./types/index.d.ts",
+  "userConfig": {
+    "codexEnabled": {
+      "type": "boolean",
+      "title": "Codex seat",
+      "description": "Run the Codex reviewer.",
+      "default": true
+    },
+    "codexModel": {
+      "type": "string",
+      "title": "Codex model",
+      "description": "Model passed to codex exec -m.",
+      "default": "gpt-6-astra"
+    },
+    "codexEffort": {
+      "type": "string",
+      "title": "Codex reasoning effort",
+      "description": "model_reasoning_effort for the Codex seat.",
+      "default": "medium",
+      "options": [
+        "none",
+        "minimal",
+        "low",
+        "medium",
+        "high",
+        "xhigh"
+      ]
+    },
+    "grokEnabled": {
+      "type": "boolean",
+      "title": "Grok seat",
+      "description": "Run the Grok reviewer.",
+      "default": true
+    },
+    "grokModel": {
+      "type": "string",
+      "title": "Grok model",
+      "description": "Model passed to grok -m.",
+      "default": "grok-4.7"
+    },
+    "grokEffort": {
+      "type": "string",
+      "title": "Grok reasoning effort",
+      "description": "--reasoning-effort for the Grok seat.",
+      "default": "high",
+      "options": [
+        "low",
+        "medium",
+        "high"
+      ]
+    },
+    "maxDiffKb": {
+      "type": "number",
+      "title": "Max diff size (KB)",
+      "description": "The diff (with new files) is cut to this size before it is sent; 200 at most.",
+      "default": 120
+    },
+    "timeoutMinutes": {
+      "type": "number",
+      "title": "Reviewer timeout (minutes)",
+      "description": "Each seat is stopped after this long (10 at most).",
+      "default": 8
+    },
+    "defaultBase": {
+      "type": "string",
+      "title": "Fallback base",
+      "description": "When the working tree is clean, review the branch against this ref instead (empty: the remote's default branch).",
+      "default": ""
+    }
+  },
+  "author": {
+    "name": "Chris Dwyer",
+    "url": "https://github.com/ccdwyer"
+  },
+  "repository": "https://github.com/ccdwyer/inline-tribunal"
+}

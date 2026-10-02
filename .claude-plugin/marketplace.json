@@ -1,0 +1,13 @@
+{
+  "name": "inline-tribunal",
+  "owner": {
+    "name": "Chris Dwyer"
+  },
+  "plugins": [
+    {
+      "name": "inline-tribunal",
+      "source": "./",
+      "description": "A second_opinion tool and /tribunal command: your diff is reviewed by Codex and Grok side by side, read-only, inside the session"
+    }
+  ]
+}
