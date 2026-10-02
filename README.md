@@ -69,3 +69,21 @@ Claude then fixes what both reviewers agreed on:
 claude plugin validate .
 claude plugin test .
 ```
+
+## What it hooks
+
+Events this mod hooks, as `claude plugin validate` reads the module:
+
+- `session.start`
+- `tool.call{tool=mcp__inline-tribunal__second_opinion}`
+- `command.run{command=tribunal}`
+- `ui.render{component=Pane`
+- `requestId=tribunal}`
+
+Engine calls it makes: `$.clock.now (via collectDiff`, `convene)`, `$.command.register`, `$.fs.read (via runCodex)`, `$.fs.write (via runGrok)`, `$.process.run (via collectDiff`, `isolatedHome`, `realHome`, `runCodex`, `runGrok`, `tempDir)`, `$.state.get`, `$.state.set`, `$.tool.register`, `$.ui.open (via convene)`, `$.ui.resolve`, `$.ui.toast (via convene)`.
+
+A `tool.call` hook sits in the middle of every tool call: it can see the call, refuse it, or add context to its result. This mod uses that only for the behaviour described above.
+
+## License
+
+MIT

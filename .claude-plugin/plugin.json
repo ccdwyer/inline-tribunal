@@ -76,5 +76,6 @@
     "name": "Chris Dwyer",
     "url": "https://github.com/ccdwyer"
   },
-  "repository": "https://github.com/ccdwyer/inline-tribunal"
+  "repository": "https://github.com/ccdwyer/inline-tribunal",
+  "license": "MIT"
 }
