@@ -1,6 +1,6 @@
 {
   "name": "inline-tribunal",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A second_opinion tool and /tribunal command: your diff is reviewed by Codex and Grok side by side, read-only, inside the session",
   "types": "./types/index.d.ts",
   "userConfig": {
