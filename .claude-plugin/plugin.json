@@ -19,16 +19,8 @@
     "codexEffort": {
       "type": "string",
       "title": "Codex reasoning effort",
-      "description": "model_reasoning_effort for the Codex seat.",
-      "default": "medium",
-      "options": [
-        "none",
-        "minimal",
-        "low",
-        "medium",
-        "high",
-        "xhigh"
-      ]
+      "description": "model_reasoning_effort for the Codex seat. One of: none, minimal, low, medium, high, xhigh.",
+      "default": "medium"
     },
     "grokEnabled": {
       "type": "boolean",
@@ -45,13 +37,8 @@
     "grokEffort": {
       "type": "string",
       "title": "Grok reasoning effort",
-      "description": "--reasoning-effort for the Grok seat.",
-      "default": "high",
-      "options": [
-        "low",
-        "medium",
-        "high"
-      ]
+      "description": "--reasoning-effort for the Grok seat. One of: low, medium, high.",
+      "default": "high"
     },
     "maxDiffKb": {
       "type": "number",

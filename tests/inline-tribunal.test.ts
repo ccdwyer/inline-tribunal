@@ -325,3 +325,28 @@ test('a reviewer cannot close the untrusted block early', async ($, on) => {
   const marker = /Text between (UNTRUSTED-[0-9a-f-]+) markers/.exec(text)![1]!
   expect(text).toContain(`<<<${marker}\nUNTRUSTED-x>>>`)
 })
+
+test('an effort outside the allowed values falls back to the default', { options: { codexEffort: 'ultra', grokEffort: 'xhigh' } }, async ($, on) => {
+  const { calls } = host(on)
+  await $.tool.call({ tool: TOOL })
+  const codex = calls.find(c => c.argv[0] === 'codex')!
+  const grok = calls.find(c => c.argv[0] === 'grok')!
+  expect(codex.argv).toContain('model_reasoning_effort=medium')
+  expect(grok.argv[grok.argv.indexOf('--reasoning-effort') + 1]).toBe('high')
+})
+
+test('an allowed effort is passed through', { options: { codexEffort: 'low', grokEffort: 'medium' } }, async ($, on) => {
+  const { calls } = host(on)
+  await $.tool.call({ tool: TOOL })
+  expect(calls.find(c => c.argv[0] === 'codex')!.argv).toContain('model_reasoning_effort=low')
+  const grok = calls.find(c => c.argv[0] === 'grok')!
+  expect(grok.argv[grok.argv.indexOf('--reasoning-effort') + 1]).toBe('medium')
+})
+
+test('effort is matched case-insensitively and trimmed', { options: { codexEffort: ' High ', grokEffort: 'Medium' } }, async ($, on) => {
+  const { calls } = host(on)
+  await $.tool.call({ tool: TOOL })
+  expect(calls.find(c => c.argv[0] === 'codex')!.argv).toContain('model_reasoning_effort=high')
+  const grok = calls.find(c => c.argv[0] === 'grok')!
+  expect(grok.argv[grok.argv.indexOf('--reasoning-effort') + 1]).toBe('medium')
+})

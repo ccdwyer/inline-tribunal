@@ -35,6 +35,9 @@ const CODEX_LOCKDOWN = [
 // Grok: every tool call denied, no subagents, no web.
 const GROK_LOCKDOWN = ['--verbatim', '--deny', '*', '--no-subagents', '--disable-web-search']
 
+const CODEX_EFFORTS = ['none', 'minimal', 'low', 'medium', 'high', 'xhigh'] as const
+const GROK_EFFORTS = ['low', 'medium', 'high'] as const
+
 type Config = {
   codex: { enabled: boolean; model: string; effort: string }
   grok: { enabled: boolean; model: string; effort: string }
@@ -47,9 +50,13 @@ function config(options: PluginOptions): Config {
   const str = (k: string, d: string) => (typeof options[k] === 'string' && options[k] !== '' ? String(options[k]) : d)
   const num = (k: string, d: number) => (typeof options[k] === 'number' && Number.isFinite(options[k]) ? Number(options[k]) : d)
   const bool = (k: string, d: boolean) => (typeof options[k] === 'boolean' ? Boolean(options[k]) : d)
+  // The manifest can't list allowed values (the directory refuses "options"), so a value outside them counts as unset.
+  // Free text now, so fold case (ASCII only, locale-proof) and trim before checking the allowlist.
+  const fold = (v: string) => v.trim().replace(/[A-Z]/g, ch => String.fromCharCode(ch.charCodeAt(0) + 32))
+  const pick = (k: string, allowed: readonly string[], d: string) => allowed.find(a => a === fold(str(k, d))) ?? d
   return {
-    codex: { enabled: bool('codexEnabled', true), model: str('codexModel', 'gpt-6-astra'), effort: str('codexEffort', 'medium') },
-    grok: { enabled: bool('grokEnabled', true), model: str('grokModel', 'grok-4.7'), effort: str('grokEffort', 'high') },
+    codex: { enabled: bool('codexEnabled', true), model: str('codexModel', 'gpt-6-astra'), effort: pick('codexEffort', CODEX_EFFORTS, 'medium') },
+    grok: { enabled: bool('grokEnabled', true), model: str('grokModel', 'grok-4.7'), effort: pick('grokEffort', GROK_EFFORTS, 'high') },
     maxDiffBytes: Math.min(MAX_DIFF_KB, Math.max(4, num('maxDiffKb', 120))) * 1024,
     timeoutMs: Math.min(10, Math.max(1, num('timeoutMinutes', 8))) * 60_000,
     defaultBase: str('defaultBase', ''),
